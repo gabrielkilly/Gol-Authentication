@@ -28,6 +28,4 @@ func (userService) CreateUser(ctx *gin.Context) {
 
 	encryptedPassword := usecase.EncryptDataOrNil([]byte(request.Password))
 	log.Printf("Encrypted password value: %s", encryptedPassword)
-
-	return true
 }

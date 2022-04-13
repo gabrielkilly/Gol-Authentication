@@ -23,6 +23,7 @@ type mongoDatabase struct {
 //TODO: Currently have an IP Address whitelist. Validate that all is good with it.
 func NewDatabase(globalConfig *config.GlobalConfig) Database {
 	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
+	log.Println(globalConfig.DatabaseUrl)
 	clientOptions := options.Client().ApplyURI(globalConfig.DatabaseUrl).SetServerAPIOptions(serverAPIOptions)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -33,6 +34,6 @@ func NewDatabase(globalConfig *config.GlobalConfig) Database {
 	return mongoDatabase{client: client}
 }
 
-func (mongoDatabase) CreateAuthUser(authUser do.CreateAuthUserRequest) bool {
-	return true
+func (this mongoDatabase) CreateAuthUser(authUser do.CreateAuthUserRequest) bool {
+	return true //TODO
 }
