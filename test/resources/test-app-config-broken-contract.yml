@@ -1,0 +1,4 @@
+env1: testEnv
+databaseUrls: "testDatabaseUrl"
+hostname: "testHostname"
+cool: beans
