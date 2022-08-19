@@ -3,7 +3,7 @@ package di
 import (
 	"gol/the-basics/dev/config"
 	"gol/the-basics/dev/db"
-	"gol/the-basics/dev/service"
+	"gol/the-basics/dev/do"
 	"gol/the-basics/dev/service/user"
 	"gol/the-basics/dev/usecase"
 	"log"
@@ -18,8 +18,8 @@ func SetupDependencies() GlobalDeps {
 	globalConfig := killOnError(config.NewGlobalConfig("resources/app-config.yml"))
 	database := db.NewDatabase(&globalConfig)
 	encryptor := usecase.NewEncryptor()
-	userService := service.NewUserService(&database, &encryptor)
-	userController := user.NewUserController(&userService)
+	userService := user.NewUserService(&database, &encryptor)
+	userController := user.NewUserController(&userService, usecase.MapResponse[do.CreateAuthUserResponse])
 
 	return GlobalDeps{
 		UserController: &userController,

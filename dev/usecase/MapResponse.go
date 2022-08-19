@@ -11,8 +11,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ServiceContext[T any](response func(*gin.Context) (do.HttpResponse[T], error)) func(*gin.Context) {
-	httpResponse, err := response()
+type ResponeMapper[T any] func(httpResponse do.HttpResponse[T], err error) func(*gin.Context)
+
+func MapResponse[T any](httpResponse do.HttpResponse[T], err error) func(*gin.Context) {
 	if err != nil {
 		var httpError exception.SHttpException
 		if errors.As(err, &httpError) {

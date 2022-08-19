@@ -8,7 +8,7 @@ import (
 	"gol/the-basics/dev/exception"
 )
 
-func (this UserService) CreateUser(request do.CreateAuthUserRequest) (do.HttpResponse[do.CreateAuthUserResponse], error) {
+func (this *UserService) CreateUser(request do.CreateAuthUserRequest) (do.HttpResponse[do.CreateAuthUserResponse], error) {
 
 	encryptedPassword, encryptionError := (*this.encryptor).EncryptPassword(request.Password)
 	if encryptionError != nil {

@@ -15,12 +15,12 @@ type Encryptor struct {
 }
 
 func NewEncryptor() IEncryptor {
-	return Encryptor{
+	return &Encryptor{
 		Encrypt: bcrypt.GenerateFromPassword,
 	}
 }
 
-func (this Encryptor) EncryptPassword(password string) (string, error) {
+func (this *Encryptor) EncryptPassword(password string) (string, error) {
 	hashedPassword, hashingError := this.Encrypt([]byte(password), bcrypt.MinCost)
 
 	if hashingError != nil {
