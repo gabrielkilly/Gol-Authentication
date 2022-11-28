@@ -3,6 +3,7 @@ package test
 import (
 	"gol/the-basics/dev/do"
 	"gol/the-basics/dev/service/user"
+	"gol/the-basics/dev/usecase"
 	"gol/the-basics/test/mocks"
 	"log"
 	"net/http/httptest"
@@ -42,7 +43,7 @@ func TestCreateUserSuccess(t *testing.T) {
 	var iUserServiceMock user.IUserService = userServiceMock
 
 	userController := user.NewUserController(
-		&iUserServiceMock, mocks.MapResponseMock[do.CreateAuthUserResponse],
+		&iUserServiceMock, usecase.MapResponse[do.CreateAuthUserResponse],
 	)
 
 	testRecorder := httptest.NewRecorder()

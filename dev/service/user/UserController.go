@@ -27,5 +27,5 @@ func NewUserController(
 func (this *UserController) CreateUser(ctx *gin.Context) {
 	var createAuthUserRequest do.CreateAuthUserRequest
 	ctx.BindJSON(&createAuthUserRequest)
-	this.mapResponse((*this.userService).CreateUser(createAuthUserRequest))
+	this.mapResponse((*this.userService).CreateUser(createAuthUserRequest))(ctx)
 }

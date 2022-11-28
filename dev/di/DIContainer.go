@@ -16,7 +16,7 @@ type GlobalDeps struct {
 
 func SetupDependencies() GlobalDeps {
 	globalConfig := killOnError(config.NewGlobalConfig("resources/app-config.yml"))
-	database := db.NewDatabase(&globalConfig)
+	database := db.NewFakeDatabase()
 	encryptor := usecase.NewEncryptor()
 	userService := user.NewUserService(&database, &encryptor)
 	userController := user.NewUserController(&userService, usecase.MapResponse[do.CreateAuthUserResponse])
