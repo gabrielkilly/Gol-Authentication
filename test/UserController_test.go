@@ -36,6 +36,7 @@ func TestCreateUserSuccess(t *testing.T) {
 				Data: do.CreateAuthUserResponse{
 					Username: "testname",
 					Password: "testpassword",
+					Id:       "testid",
 				},
 			}, nil
 		},
@@ -46,8 +47,13 @@ func TestCreateUserSuccess(t *testing.T) {
 		&iUserServiceMock, usecase.MapResponse[do.CreateAuthUserResponse],
 	)
 
+	gin.SetMode(gin.TestMode)
 	testRecorder := httptest.NewRecorder()
 	testContext, _ := gin.CreateTestContext(testRecorder)
+	testContext.Params = []gin.Param{
+		{Key: "username", Value: "testname"},
+		{Key: "password", Value: "testpassword"},
+	}
 
 	userController.CreateUser(testContext)
 

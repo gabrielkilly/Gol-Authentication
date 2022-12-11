@@ -2,7 +2,9 @@ package user
 
 import (
 	"gol/the-basics/dev/do"
+	"gol/the-basics/dev/exception"
 	"gol/the-basics/dev/usecase"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,6 +28,16 @@ func NewUserController(
 
 func (this *UserController) CreateUser(ctx *gin.Context) {
 	var createAuthUserRequest do.CreateAuthUserRequest
-	ctx.BindJSON(&createAuthUserRequest)
-	this.mapResponse((*this.userService).CreateUser(createAuthUserRequest))(ctx)
+	err := ctx.BindJSON(&createAuthUserRequest)
+	if err != nil {
+		this.mapResponse(
+			do.EmptyResponse[do.CreateAuthUserResponse](),
+			exception.SHttpException{Code: http.StatusBadRequest, Message: err.Error()},
+		)(ctx)
+	} else {
+		this.mapResponse(
+			(*this.userService).CreateUser(createAuthUserRequest),
+		)(ctx)
+	}
+	return
 }
