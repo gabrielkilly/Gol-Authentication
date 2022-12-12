@@ -26,18 +26,17 @@ func NewUserController(
 	return &UserController{userService: userService, mapResponse: responseMapper}
 }
 
-func (this *UserController) CreateUser(ctx *gin.Context) {
+func (controller *UserController) CreateUser(ctx *gin.Context) {
 	var createAuthUserRequest do.CreateAuthUserRequest
 	err := ctx.BindJSON(&createAuthUserRequest)
 	if err != nil {
-		this.mapResponse(
+		controller.mapResponse(
 			do.EmptyResponse[do.CreateAuthUserResponse](),
-			exception.SHttpException{Code: http.StatusBadRequest, Message: err.Error()},
+			exception.SHttpException{Code: http.StatusBadRequest, Message: "[UserController] " + err.Error()},
 		)(ctx)
 	} else {
-		this.mapResponse(
-			(*this.userService).CreateUser(createAuthUserRequest),
+		controller.mapResponse(
+			(*controller.userService).CreateUser(createAuthUserRequest),
 		)(ctx)
 	}
-	return
 }

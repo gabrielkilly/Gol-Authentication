@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+//go:generate moq -out ../../test/mocks/IEncryptor.go -pkg mocks . IEncryptor
 type IEncryptor interface {
 	EncryptPassword(password string) (string, error)
 }
