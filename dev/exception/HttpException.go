@@ -8,6 +8,7 @@ type SHttpException struct {
 	Code    int
 	Message string
 }
+
 type IHttpException interface {
 	Error() string
 }

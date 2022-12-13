@@ -1,4 +1,4 @@
-package test
+package user
 
 import (
 	"gol/the-basics/dev/do"
@@ -10,33 +10,16 @@ import (
 	"testing"
 )
 
-type userControllerState int
+type controllerState int
 
 const (
-	success userControllerState = iota
-	failure
+	controllerSuccess controllerState = iota
+	controllerFailure
 )
-
-func TestNewUserController(t *testing.T) {
-	var userServiceMock user.IUserService = &mocks.IUserServiceMock{
-		CreateUserFunc: func(request do.CreateAuthUserRequest) (do.HttpResponse[do.CreateAuthUserResponse], error) {
-			return do.HttpResponse[do.CreateAuthUserResponse]{}, nil
-		},
-	}
-
-	userController := user.NewUserController(
-		&userServiceMock, mocks.MapResponseMock[do.CreateAuthUserResponse],
-	)
-
-	if userController == nil {
-		t.Error("NewUserController is returning nil")
-	}
-
-}
 
 func TestCreateUserSuccess(t *testing.T) {
 
-	userController, expectedResponse := getUserController(success)
+	userController, expectedResponse := getUserController(controllerSuccess)
 
 	testRecorder, testContext := util.MockGin()
 	util.MockJsonPost(
@@ -62,7 +45,7 @@ func TestCreateUserSuccess(t *testing.T) {
 }
 
 func TestCreateUserInvalidRequestNoPassword(t *testing.T) {
-	userController, _ := getUserController(success)
+	userController, _ := getUserController(controllerSuccess)
 
 	testRecorder, testContext := util.MockGin()
 
@@ -80,7 +63,7 @@ func TestCreateUserInvalidRequestNoPassword(t *testing.T) {
 }
 
 func TestCreateUserInvalidRequestNoUsername(t *testing.T) {
-	userController, _ := getUserController(success)
+	userController, _ := getUserController(controllerSuccess)
 
 	testRecorder, testContext := util.MockGin()
 
@@ -98,7 +81,7 @@ func TestCreateUserInvalidRequestNoUsername(t *testing.T) {
 }
 
 func TestCreateUserServiceError(t *testing.T) {
-	userController, _ := getUserController(failure)
+	userController, _ := getUserController(controllerFailure)
 
 	testRecorder, testContext := util.MockGin()
 
@@ -115,26 +98,23 @@ func TestCreateUserServiceError(t *testing.T) {
 	}
 }
 
-func getUserController(state userControllerState) (user.IUserController, do.CreateAuthUserResponse) {
+func getUserController(state controllerState) (user.IUserController, do.CreateAuthUserResponse) {
 	expectedResponse := do.CreateAuthUserResponse{
 		Username: "testname",
 		Password: "testpassword",
 		Id:       "testid",
 	}
-	userServiceMock := &mocks.IUserServiceMock{
-		CreateUserFunc: func(request do.CreateAuthUserRequest) (do.HttpResponse[do.CreateAuthUserResponse], error) {
-			if state == failure {
-				return do.EmptyResponse[do.CreateAuthUserResponse](), exception.SHttpException{Code: 500, Message: "Error"}
+	var userServiceMock user.IUserService = &mocks.IUserServiceMock{
+		CreateUserFunc: func(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, error) {
+			if state == controllerFailure {
+				return nil, exception.SHttpException{Code: 500, Message: "Error"}
 			} else {
-				return do.HttpResponse[do.CreateAuthUserResponse]{
-					Code: 201, Data: expectedResponse,
-				}, nil
+				return &expectedResponse, nil
 			}
 		},
 	}
-	var iUserServiceMock user.IUserService = userServiceMock
 	controller := user.NewUserController(
-		&iUserServiceMock, usecase.MapResponse[do.CreateAuthUserResponse],
+		&userServiceMock, usecase.MapResponse[do.CreateAuthUserResponse],
 	)
 	return controller, expectedResponse
 }

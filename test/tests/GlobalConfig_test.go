@@ -1,4 +1,4 @@
-package test
+package tests
 
 import (
 	"gol/the-basics/dev/config"

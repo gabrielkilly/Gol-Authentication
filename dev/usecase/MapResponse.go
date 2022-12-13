@@ -11,9 +11,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ResponeMapper[T any] func(httpResponse do.HttpResponse[T], err error) func(*gin.Context)
+type ResponeMapper[T any] func(httpResponse *do.HttpResponse[T], err error) func(*gin.Context)
 
-func MapResponse[T any](httpResponse do.HttpResponse[T], err error) func(*gin.Context) {
+func MapResponse[T any](httpResponse *do.HttpResponse[T], err error) func(*gin.Context) {
 	if err != nil {
 		var httpError exception.SHttpException
 		if errors.As(err, &httpError) {
@@ -32,10 +32,10 @@ func MapResponse[T any](httpResponse do.HttpResponse[T], err error) func(*gin.Co
 	}
 }
 
-func sendData[T any](ctx *gin.Context, response do.HttpResponse[T]) {
+func sendData[T any](ctx *gin.Context, response *do.HttpResponse[T]) {
 	ctx.JSON(
-		response.Code,
-		response.Data,
+		(*response).Code,
+		(*response).Data,
 	)
 }
 
