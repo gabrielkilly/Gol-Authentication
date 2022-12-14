@@ -11,24 +11,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ResponeMapper[T any] func(httpResponse *do.HttpResponse[T], err error) func(*gin.Context)
+type ResponeMapper[T any] func(httpResponse *do.HttpResponse[T]) func(*gin.Context)
 
-func MapResponse[T any](httpResponse *do.HttpResponse[T], err error) func(*gin.Context) {
-	if err != nil {
-		var httpError exception.SHttpException
-		if errors.As(err, &httpError) {
-			return func(ctx *gin.Context) {
-				sendHttpErrorMessage(ctx, httpError)
-			}
-		} else {
-			return func(ctx *gin.Context) {
-				sendErrorMessage(ctx, fmt.Errorf("Unrecognized error: %w", err))
-			}
-		}
-	} else {
-		return func(ctx *gin.Context) {
-			sendData(ctx, httpResponse)
-		}
+func MapResponse[T any](httpResponse *do.HttpResponse[T]) func(*gin.Context) {
+	return func(ctx *gin.Context) {
+		sendData(ctx, httpResponse)
 	}
 }
 
@@ -37,6 +24,19 @@ func sendData[T any](ctx *gin.Context, response *do.HttpResponse[T]) {
 		(*response).Code,
 		(*response).Data,
 	)
+}
+
+func MapError(err error) func(*gin.Context) {
+	var httpError exception.SHttpException
+	if errors.As(err, &httpError) {
+		return func(ctx *gin.Context) {
+			sendHttpErrorMessage(ctx, httpError)
+		}
+	} else {
+		return func(ctx *gin.Context) {
+			sendErrorMessage(ctx, fmt.Errorf("Unrecognized error: %w", err))
+		}
+	}
 }
 
 func sendErrorMessage(ctx *gin.Context, e error) {

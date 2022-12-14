@@ -5,6 +5,7 @@ package mocks
 
 import (
 	"gol/the-basics/dev/do"
+	"gol/the-basics/dev/exception"
 	"gol/the-basics/dev/service/user"
 	"sync"
 )
@@ -19,7 +20,7 @@ var _ user.IUserService = &IUserServiceMock{}
 //
 // 		// make and configure a mocked user.IUserService
 // 		mockedIUserService := &IUserServiceMock{
-// 			CreateUserFunc: func(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, error) {
+// 			CreateUserFunc: func(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, exception.IHttpException) {
 // 				panic("mock out the CreateUser method")
 // 			},
 // 		}
@@ -30,7 +31,7 @@ var _ user.IUserService = &IUserServiceMock{}
 // 	}
 type IUserServiceMock struct {
 	// CreateUserFunc mocks the CreateUser method.
-	CreateUserFunc func(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, error)
+	CreateUserFunc func(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, exception.IHttpException)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -44,7 +45,7 @@ type IUserServiceMock struct {
 }
 
 // CreateUser calls CreateUserFunc.
-func (mock *IUserServiceMock) CreateUser(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, error) {
+func (mock *IUserServiceMock) CreateUser(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, exception.IHttpException) {
 	if mock.CreateUserFunc == nil {
 		panic("IUserServiceMock.CreateUserFunc: method is nil but IUserService.CreateUser was just called")
 	}

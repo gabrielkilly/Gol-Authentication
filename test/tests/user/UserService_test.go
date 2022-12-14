@@ -18,19 +18,36 @@ const (
 	serviceSuccess
 )
 
-func TestUserServiceHappyPath(*testing.T) {
-	// service, expectedResponse := getUserService(serviceSuccess)
+var defaultCreateAuthUserRequest do.CreateAuthUserRequest = do.CreateAuthUserRequest{
+	Username: "testusername",
+	Password: "testpassword",
+}
 
-	// response, _ := service.CreateUser(
-	// 	do.CreateAuthUserRequest{
-	// 		Username: "testusername",
-	// 		Password: "testpassword",
-	// 	},
-	// )
+func TestUserServiceHappyPath(t *testing.T) {
+	service, expectedResponse := getUserService(serviceSuccess)
 
-	// response.
+	response, _ := service.CreateUser(defaultCreateAuthUserRequest)
+
+	if (*response).Id != (*expectedResponse).Id ||
+		(*response).Username != (*expectedResponse).Username ||
+		(*response).Password != (*expectedResponse).Password {
+		t.Errorf("The response %s does not match expected %s", *response, *expectedResponse)
+	}
 
 }
+
+// func TestUserServiceEncryptionError(t *testing.T) {
+// 	service, expectedResponse := getUserService(serviceEncryptError)
+
+// 	response, err := service.CreateUser(defaultCreateAuthUserRequest)
+
+// 	if (err == nil) {
+// 		t.Error("Expected error to be thrown")
+// 	} 
+
+// 	if (err.)
+
+// }
 
 func getUserService(state serviceState) (user.IUserService, *do.CreateAuthUserResponse) {
 	expectedResponse := do.CreateAuthUserResponse{

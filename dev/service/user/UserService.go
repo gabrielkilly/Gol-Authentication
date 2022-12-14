@@ -9,7 +9,7 @@ import (
 
 //go:generate moq -out ../../../test/mocks/IUserServiceMock.go -pkg mocks . IUserService
 type IUserService interface {
-	CreateUser(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, error)
+	CreateUser(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, exception.IHttpException)
 }
 
 type UserService struct {
@@ -21,7 +21,7 @@ func NewUserService(database *db.IDatabase, encryptor *usecase.IEncryptor) IUser
 	return &UserService{database: database, encryptor: encryptor}
 }
 
-func (this *UserService) CreateUser(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, error) {
+func (this *UserService) CreateUser(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, exception.IHttpException) {
 
 	encryptedPassword, encryptionError := (*this.encryptor).EncryptPassword(request.Password)
 	if encryptionError != nil {

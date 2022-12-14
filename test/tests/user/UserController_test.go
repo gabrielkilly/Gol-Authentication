@@ -4,7 +4,6 @@ import (
 	"gol/the-basics/dev/do"
 	"gol/the-basics/dev/exception"
 	"gol/the-basics/dev/service/user"
-	"gol/the-basics/dev/usecase"
 	"gol/the-basics/test/mocks"
 	"gol/the-basics/test/util"
 	"testing"
@@ -105,7 +104,7 @@ func getUserController(state controllerState) (user.IUserController, do.CreateAu
 		Id:       "testid",
 	}
 	var userServiceMock user.IUserService = &mocks.IUserServiceMock{
-		CreateUserFunc: func(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, error) {
+		CreateUserFunc: func(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, exception.IHttpException) {
 			if state == controllerFailure {
 				return nil, exception.SHttpException{Code: 500, Message: "Error"}
 			} else {
@@ -113,8 +112,6 @@ func getUserController(state controllerState) (user.IUserController, do.CreateAu
 			}
 		},
 	}
-	controller := user.NewUserController(
-		&userServiceMock, usecase.MapResponse[do.CreateAuthUserResponse],
-	)
+	controller := user.NewUserController(&userServiceMock)
 	return controller, expectedResponse
 }

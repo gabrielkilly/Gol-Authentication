@@ -21,25 +21,26 @@ type UserController struct {
 
 func NewUserController(
 	userService *IUserService,
-	responseMapper usecase.ResponeMapper[do.CreateAuthUserResponse],
 ) IUserController {
-	return &UserController{userService: userService, mapResponse: responseMapper}
+	return &UserController{userService: userService}
 }
 
-func (controller *UserController) CreateUser(ctx *gin.Context) {
+func (userController *UserController) CreateUser(ctx *gin.Context) {
 	var createAuthUserRequest do.CreateAuthUserRequest
 	bindingError := ctx.BindJSON(&createAuthUserRequest)
 	if bindingError != nil {
-		controller.mapResponse(
-			nil,
+		usecase.MapError(
 			exception.NewInvalidParamsException(
 				fmt.Sprintf("UserController.CreateUser: %s", bindingError.Error()),
 			),
 		)(ctx)
 	} else {
-		data, serviceError := (*controller.userService).CreateUser(createAuthUserRequest)
-		if 
-		httpResponse := do.HttpCreated(*data)
-		controller.mapResponse(&httpResponse, serviceError)(ctx)
+		data, serviceError := (*userController.userService).CreateUser(createAuthUserRequest)
+		if serviceError != nil {
+			usecase.MapError(serviceError)(ctx)
+		} else {
+			httpResponse := do.HttpCreated(*data)
+			usecase.MapResponse(&httpResponse)(ctx)
+		}
 	}
 }
