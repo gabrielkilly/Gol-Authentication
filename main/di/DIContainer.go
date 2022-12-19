@@ -14,6 +14,7 @@ type GlobalDeps struct {
 }
 
 func SetupDependencies() GlobalDeps {
+	environment := killOnError(config.NewEnvironment("/.env"))
 	globalConfig := killOnError(config.NewGlobalConfig("resources/app-config.yml"))
 	database := db.NewFakeDatabase()
 	encryptor := usecase.NewEncryptor()
