@@ -4,9 +4,9 @@
 package mocks
 
 import (
-	"gol/the-basics/dev/do"
-	"gol/the-basics/dev/exception"
-	"gol/the-basics/dev/service/user"
+	"gol/the-basics/main/do"
+	"gol/the-basics/main/exception"
+	"gol/the-basics/main/service/user"
 	"sync"
 )
 

@@ -4,8 +4,8 @@
 package mocks
 
 import (
-	"gol/the-basics/dev/db"
-	"gol/the-basics/dev/do"
+	"gol/the-basics/main/db"
+	"gol/the-basics/main/do"
 	"sync"
 )
 

@@ -2,11 +2,11 @@ package user
 
 import (
 	"errors"
-	"gol/the-basics/dev/db"
-	"gol/the-basics/dev/do"
-	"gol/the-basics/dev/exception"
-	"gol/the-basics/dev/service/user"
-	"gol/the-basics/dev/usecase"
+	"gol/the-basics/main/db"
+	"gol/the-basics/main/do"
+	"gol/the-basics/main/exception"
+	"gol/the-basics/main/service/user"
+	"gol/the-basics/main/usecase"
 	"gol/the-basics/test/mocks"
 	"net/http"
 	"testing"

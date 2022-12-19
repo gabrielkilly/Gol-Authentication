@@ -1,0 +1,37 @@
+package user
+
+import (
+	"gol/the-basics/main/db"
+	"gol/the-basics/main/do"
+	"gol/the-basics/main/exception"
+	"gol/the-basics/main/usecase"
+)
+
+//go:generate moq -out ../../../test/mocks/IUserServiceMock.go -pkg mocks . IUserService
+type IUserService interface {
+	CreateUser(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, exception.IHttpException)
+}
+
+type UserService struct {
+	database  *db.IDatabase
+	encryptor *usecase.IEncryptor
+}
+
+func NewUserService(database *db.IDatabase, encryptor *usecase.IEncryptor) IUserService {
+	return &UserService{database: database, encryptor: encryptor}
+}
+
+func (this *UserService) CreateUser(request do.CreateAuthUserRequest) (*do.CreateAuthUserResponse, exception.IHttpException) {
+
+	encryptedPassword, encryptionError := (*this.encryptor).EncryptPassword(request.Password)
+	if encryptionError != nil {
+		return nil, exception.NewEncryptPasswordException("UserSerivce.CreateUser")
+	}
+
+	dbResponse, dbErr := (*this.database).CreateAuthUser(request.Username, string(encryptedPassword))
+	if dbErr != nil {
+		return nil, exception.NewDatabaseErrorException("UserService.CreateUser")
+	}
+
+	return dbResponse, nil
+}

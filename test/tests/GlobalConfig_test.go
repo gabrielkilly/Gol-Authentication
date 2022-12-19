@@ -1,12 +1,12 @@
 package tests
 
 import (
-	"gol/the-basics/dev/config"
+	"gol/the-basics/main/config"
 	"testing"
 )
 
 func TestInvalidFilePath(t *testing.T) {
-	globalConfig, err := config.NewGlobalConfig("resourcess/test-apper-config.yml")
+	globalConfig, err := config.NewGlobalConfig("../resourcess/test-apper-config.yml")
 	if err == nil {
 		t.Errorf("Invalid file path does not cause error: %s", globalConfig)
 	}
@@ -20,7 +20,7 @@ func TestInvalidYmlConfiguration(t *testing.T) {
 }
 
 func TestGlobalConfigLoad(t *testing.T) {
-	globalConfig, _ := config.NewGlobalConfig("resources/test-app-config.yml")
+	globalConfig, _ := config.NewGlobalConfig("../resources/test-app-config.yml")
 
 	if globalConfig.DatabaseUrl != "testDatabaseUrl" ||
 		globalConfig.Env != "testEnv" ||

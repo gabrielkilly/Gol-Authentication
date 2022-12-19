@@ -5,7 +5,7 @@ package mocks
 
 import (
 	"github.com/gin-gonic/gin"
-	"gol/the-basics/dev/service/user"
+	"gol/the-basics/main/service/user"
 	"sync"
 )
 

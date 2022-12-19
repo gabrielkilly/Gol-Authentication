@@ -4,7 +4,7 @@
 package mocks
 
 import (
-	"gol/the-basics/dev/usecase"
+	"gol/the-basics/main/usecase"
 	"sync"
 )
 
