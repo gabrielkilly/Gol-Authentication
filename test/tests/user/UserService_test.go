@@ -4,9 +4,11 @@ import (
 	"errors"
 	"gol/the-basics/dev/db"
 	"gol/the-basics/dev/do"
+	"gol/the-basics/dev/exception"
 	"gol/the-basics/dev/service/user"
 	"gol/the-basics/dev/usecase"
 	"gol/the-basics/test/mocks"
+	"net/http"
 	"testing"
 )
 
@@ -36,18 +38,39 @@ func TestUserServiceHappyPath(t *testing.T) {
 
 }
 
-// func TestUserServiceEncryptionError(t *testing.T) {
-// 	service, expectedResponse := getUserService(serviceEncryptError)
+func TestUserServiceEncryptionError(t *testing.T) {
+	service, _ := getUserService(serviceEncryptError)
 
-// 	response, err := service.CreateUser(defaultCreateAuthUserRequest)
+	_, err := service.CreateUser(defaultCreateAuthUserRequest)
 
-// 	if (err == nil) {
-// 		t.Error("Expected error to be thrown")
-// 	} 
+	if err == nil {
+		t.Error("Expected error to be thrown")
+	}
 
-// 	if (err.)
+	var encryptionError exception.IHttpException
+	errors.As(err, &encryptionError)
+	if encryptionError.StatusCode() != http.StatusInternalServerError {
+		t.Errorf("Status code is %d instead of 500", encryptionError.StatusCode())
+	}
 
-// }
+}
+
+func TestUserServiceDatabaseError(t *testing.T) {
+	service, _ := getUserService(serviceDbError)
+
+	_, err := service.CreateUser(defaultCreateAuthUserRequest)
+
+	if err == nil {
+		t.Error("Expected error to be thrown")
+	}
+
+	var encryptionError exception.IHttpException
+	errors.As(err, &encryptionError)
+	if encryptionError.StatusCode() != http.StatusInternalServerError {
+		t.Errorf("Status code is %d instead of 500", encryptionError.StatusCode())
+	}
+
+}
 
 func getUserService(state serviceState) (user.IUserService, *do.CreateAuthUserResponse) {
 	expectedResponse := do.CreateAuthUserResponse{

@@ -11,8 +11,13 @@ type SHttpException struct {
 
 type IHttpException interface {
 	Error() string
+	StatusCode() int
 }
 
-func (this SHttpException) Error() string {
-	return fmt.Sprintf("HttpException status %d with message: %s", this.Code, this.Message)
+func (exception SHttpException) Error() string {
+	return fmt.Sprintf("HttpException status %d with message: %s", exception.Code, exception.Message)
+}
+
+func (exception SHttpException) StatusCode() int {
+	return exception.Code
 }
