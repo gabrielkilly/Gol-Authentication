@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -13,8 +14,9 @@ type environment struct {
 type ENV string
 
 const (
-	ENV_DEV  ENV = "dev"
-	ENV_PROD ENV = "prod"
+	ENV_DEV   ENV = "dev"
+	ENV_PROD  ENV = "prod"
+	env_error ENV = "error"
 )
 
 type IEnvironment interface {
@@ -28,25 +30,34 @@ func NewEnvironment(envFilePath string) (IEnvironment, error) {
 	if readError != nil {
 		return nil, errors.New("Failure getting environment value")
 	} else {
-		parsedEnv = parseEnv(string(data))
+		parsedEnv, parseError := parseEnv(string(data))
+
+		if parseError != nil {
+			return nil, parseError
+		}
+
 		return environment{
-			currentEnv: parseEnv(string(data)),
+			currentEnv: parsedEnv,
 		}, nil
 	}
 }
 
-func parseEnv(data string) (*ENV, error) {
+func parseEnv(data string) (ENV, error) {
 	cleanedEnv := strings.Trim(data, " \n")
 	switch cleanedEnv {
 	case string(ENV_DEV):
-		return &ENV_DEV, nil
+		return ENV_DEV, nil
 	case string(ENV_PROD):
 		return ENV_PROD, nil
-	default: 
-		return nil, nil
+	default:
+		return env_error, errors.New(fmt.Sprintf("Invalid env fowund [%s]", cleanedEnv))
 	}
 }
 
 func (env environment) GetCurrentEnv() ENV {
-	
+	return env.currentEnv
+}
+
+func (env environment) GetConfigPath() string {
+	return fmt.Sprintf("/resources/config/%s/app-config.yml", env.currentEnv)
 }
