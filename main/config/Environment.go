@@ -59,5 +59,5 @@ func (env environment) GetCurrentEnv() ENV {
 }
 
 func (env environment) GetConfigPath() string {
-	return fmt.Sprintf("/resources/config/%s/app-config.yml", env.currentEnv)
+	return fmt.Sprintf("/resources/vault/%s/app-config.yml", env.currentEnv)
 }

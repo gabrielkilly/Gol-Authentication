@@ -13,14 +13,14 @@ func TestInvalidFilePath(t *testing.T) {
 }
 
 func TestInvalidYmlConfiguration(t *testing.T) {
-	globalConfig, err := config.NewGlobalConfig("resourcess/test-app-config-broken-contract.yml")
+	globalConfig, err := config.NewGlobalConfig("../resources/globalconfig/test-app-config-broken-contract.yml")
 	if err == nil {
 		t.Errorf("Invalid yml configuration does not cause error: %s", globalConfig)
 	}
 }
 
 func TestGlobalConfigLoad(t *testing.T) {
-	globalConfig, _ := config.NewGlobalConfig("../resources/test-app-config.yml")
+	globalConfig, _ := config.NewGlobalConfig("../resources/globalconfig/test-app-config.yml")
 
 	if globalConfig.DatabaseUrl != "testDatabaseUrl" ||
 		globalConfig.Env != "testEnv" ||
