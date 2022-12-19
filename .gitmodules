@@ -1,0 +1,3 @@
+[submodule "resources/gol-authentication-keys"]
+	path = resources/vault
+	url = git@github.com:gabrielkilly/gol-authentication-keys.git
