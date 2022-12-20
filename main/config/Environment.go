@@ -28,7 +28,7 @@ func NewEnvironment(envFilePath string) (IEnvironment, error) {
 	data, readError := ioutil.ReadFile(envFilePath)
 
 	if readError != nil {
-		return nil, errors.New("Failure getting environment value")
+		return nil, fmt.Errorf("Environment.go: Failure getting environment value %s", readError)
 	} else {
 		parsedEnv, parseError := parseEnv(string(data))
 
@@ -59,5 +59,5 @@ func (env environment) GetCurrentEnv() ENV {
 }
 
 func (env environment) GetConfigPath() string {
-	return fmt.Sprintf("/resources/vault/%s/app-config.yml", env.currentEnv)
+	return fmt.Sprintf("resources/vault/%s/app-config.yml", env.currentEnv)
 }
