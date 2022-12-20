@@ -3,14 +3,15 @@ package config
 import (
 	"fmt"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gookit/config/v2"
 	"github.com/gookit/config/v2/yaml"
 )
 
 type GlobalConfig struct {
-	Env         string `mapstructure:"env"`
-	Hostname    string `mapstructure:"hostname"`
-	DatabaseUrl string `mapstructure:"databaseUrl"`
+	Env         string `mapstructure:"env" validate:"required"`
+	Hostname    string `mapstructure:"hostname" validate:"required"`
+	DatabaseUrl string `mapstructure:"databaseUrl" validate:"required"`
 }
 
 func NewGlobalConfig(configFilePath string) (GlobalConfig, error) {
@@ -27,6 +28,12 @@ func NewGlobalConfig(configFilePath string) (GlobalConfig, error) {
 	bindingError := config.BindStruct("", &gc)
 	if bindingError != nil {
 		return gc, fmt.Errorf("GlobalConfig binding error %s", bindingError)
+	}
+
+	validationError := validator.New().Struct(gc)
+
+	if validationError != nil {
+		return gc, fmt.Errorf("GlobalConfig validation error %s", bindingError)
 	}
 
 	return gc, nil
