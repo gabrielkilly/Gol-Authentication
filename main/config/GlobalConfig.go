@@ -16,7 +16,7 @@ type GlobalConfig struct {
 
 func NewGlobalConfig(configFilePath string) (GlobalConfig, error) {
 	var gc GlobalConfig
-
+	config.ClearAll()
 	config.WithOptions(config.ParseEnv)
 	config.AddDriver(yaml.Driver)
 

@@ -1,7 +1,7 @@
 package db
 
 import (
-	"gol/the-basics/main/do"
+	"gol/authentication/main/do"
 )
 
 type fakeDatabase struct{}

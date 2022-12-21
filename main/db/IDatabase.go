@@ -1,6 +1,6 @@
 package db
 
-import "gol/the-basics/main/do"
+import "gol/authentication/main/do"
 
 //go:generate moq -out ../../test/mocks/IDatabase.go -pkg mocks . IDatabase
 type IDatabase interface {

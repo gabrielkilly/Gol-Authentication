@@ -2,12 +2,12 @@ package user
 
 import (
 	"errors"
-	"gol/the-basics/main/db"
-	"gol/the-basics/main/do"
-	"gol/the-basics/main/exception"
-	"gol/the-basics/main/service/user"
-	"gol/the-basics/main/usecase"
-	"gol/the-basics/test/mocks"
+	"gol/authentication/main/db"
+	"gol/authentication/main/do"
+	"gol/authentication/main/exception"
+	"gol/authentication/main/service/user"
+	"gol/authentication/main/usecase"
+	"gol/authentication/test/mocks"
 	"net/http"
 	"testing"
 )

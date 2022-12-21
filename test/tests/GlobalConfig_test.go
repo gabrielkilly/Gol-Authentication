@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"gol/the-basics/main/config"
+	"gol/authentication/main/config"
 	"testing"
 )
 

@@ -3,8 +3,8 @@ package usecase
 import (
 	"errors"
 	"fmt"
-	"gol/the-basics/main/do"
-	"gol/the-basics/main/exception"
+	"gol/authentication/main/do"
+	"gol/authentication/main/exception"
 	"log"
 	"net/http"
 

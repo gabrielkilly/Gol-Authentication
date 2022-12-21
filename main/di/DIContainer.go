@@ -1,10 +1,10 @@
 package di
 
 import (
-	"gol/the-basics/main/config"
-	"gol/the-basics/main/db"
-	"gol/the-basics/main/service/user"
-	"gol/the-basics/main/usecase"
+	"gol/authentication/main/config"
+	"gol/authentication/main/db"
+	"gol/authentication/main/service/user"
+	"gol/authentication/main/usecase"
 	"log"
 )
 

@@ -2,7 +2,7 @@ package tests
 
 import (
 	"errors"
-	"gol/the-basics/main/usecase"
+	"gol/authentication/main/usecase"
 	"testing"
 )
 

@@ -1,10 +1,10 @@
 package user
 
 import (
-	"gol/the-basics/main/db"
-	"gol/the-basics/main/do"
-	"gol/the-basics/main/exception"
-	"gol/the-basics/main/usecase"
+	"gol/authentication/main/db"
+	"gol/authentication/main/do"
+	"gol/authentication/main/exception"
+	"gol/authentication/main/usecase"
 )
 
 //go:generate moq -out ../../../test/mocks/IUserServiceMock.go -pkg mocks . IUserService

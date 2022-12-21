@@ -2,9 +2,9 @@ package user
 
 import (
 	"fmt"
-	"gol/the-basics/main/do"
-	"gol/the-basics/main/exception"
-	"gol/the-basics/main/usecase"
+	"gol/authentication/main/do"
+	"gol/authentication/main/exception"
+	"gol/authentication/main/usecase"
 
 	"github.com/gin-gonic/gin"
 )

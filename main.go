@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gol/the-basics/main/di"
+	"gol/authentication/main/di"
 
 	"github.com/gin-gonic/gin"
 )
