@@ -11,6 +11,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup SSH Keys
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.VAULT_KEY }}
+          
       - name: Checkout
         uses: actions/checkout@v2
         with:
