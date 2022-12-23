@@ -1,9 +1,8 @@
 package config
 
 import (
-	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -24,22 +23,16 @@ type IEnvironment interface {
 	GetConfigPath() string
 }
 
-func NewEnvironment(envFilePath string) (IEnvironment, error) {
-	data, readError := ioutil.ReadFile(envFilePath)
+func NewEnvironment() (IEnvironment, error) {
+	parsedEnv, parseError := parseEnv(os.Getenv("ENV"))
 
-	if readError != nil {
-		return nil, fmt.Errorf("Environment.go: Failure getting environment value %s", readError)
-	} else {
-		parsedEnv, parseError := parseEnv(string(data))
-
-		if parseError != nil {
-			return nil, parseError
-		}
-
-		return environment{
-			currentEnv: parsedEnv,
-		}, nil
+	if parseError != nil {
+		return nil, parseError
 	}
+
+	return environment{
+		currentEnv: parsedEnv,
+	}, nil
 }
 
 func parseEnv(data string) (ENV, error) {
@@ -50,7 +43,7 @@ func parseEnv(data string) (ENV, error) {
 	case string(ENV_PROD):
 		return ENV_PROD, nil
 	default:
-		return env_error, errors.New(fmt.Sprintf("Invalid env fowund [%s]", cleanedEnv))
+		return ENV_DEV, nil
 	}
 }
 

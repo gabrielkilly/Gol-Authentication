@@ -14,7 +14,7 @@ type GlobalDeps struct {
 }
 
 func SetupDependencies() GlobalDeps {
-	environment := killOnError(config.NewEnvironment(".env"))
+	environment := killOnError(config.NewEnvironment())
 	globalConfig := killOnError(config.NewGlobalConfig(environment.GetConfigPath()))
 	database := db.NewFakeDatabase()
 	encryptor := usecase.NewEncryptor()
