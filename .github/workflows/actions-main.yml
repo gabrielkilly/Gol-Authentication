@@ -14,7 +14,7 @@ jobs:
   test: 
     runs-on: ubuntu-latest
     steps:
-       - name: Setup SSH Keys
+      - name: Setup SSH Keys
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.VAULT_KEY }}
@@ -34,7 +34,6 @@ jobs:
 
       - name: Test
         run: go test -v ./...
-      
   deploy:
     runs-on: ubuntu-latest
     steps:
